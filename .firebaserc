@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "ia-zalika",
+    "zalika": "ia-zalika"
+  }
+}
