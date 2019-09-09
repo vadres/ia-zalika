@@ -13,8 +13,8 @@ const { Item } = Sidebar;
 class App extends Component {
    
   sidebar = [
-    <Item key="cd-stats" text="Save Stats" to="/cd-stats" />,
-    <Item key="init-db" text="Initialize" to="/init-db" />
+    <Item icon="fa-th" key="cd-stats" text="Save Stats" to="/cd-stats" />,
+    <Item id="xd" icon="fa-upload" key="init-db" text="Initialize" to="/init-db" />
   ]
 
   render() {

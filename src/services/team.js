@@ -1,7 +1,6 @@
-import { db } from './firebase.cfg';
+import { db } from '../config/firebase.cfg';
 
-export default () => {
-  const teams = [
+export const teams  =  [
     { sigla: "pal", nome: "Palmeiras"},
     { sigla: "fla", nome: "Flamengo"},
     { sigla: "gre", nome: "Grêmio"},
@@ -22,19 +21,32 @@ export default () => {
     { sigla: "cea", nome: "Ceará SC"},
     { sigla: "ala", nome: "Alagoano"},
     { sigla: "ava", nome: "Avaí FC"}
-  ];
+];
 
-  for (const team of teams){
-    console.log(team);
-    db.collection("teams")
-      .doc(team.sigla)
-      .collection("data")
-      .set({ name: team.nome, initials: team.sigla })
-      .then(function() {
-        console.log("Document successfully written!"); 
-      })
-      .catch(function(error) {
-        console.error("Error writing document: ", error);
-      });
-  }
+export function saveStats (team, stats){
+  db.collection("teams")
+    .doc(team)
+    .collection("data")
+    .set(stats)
+    .then(function() {
+      console.log("Stats successfully written!"); 
+    })
+    .catch(function(error) {
+      console.error("Error writing stats: ", error);
+    });
 }
+
+export function initCollection() {
+    for (const team of teams){
+      console.log(team);
+      db.collection("teams")
+        .doc(team.sigla)
+        .set({ name: team.nome, initials: team.sigla })
+        .then(function() {
+          console.log("Document successfully written!"); 
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+    }
+  }
