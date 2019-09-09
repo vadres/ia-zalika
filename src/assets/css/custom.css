@@ -1,0 +1,11 @@
+@media (max-width: 767px) {
+  .main-sidebar {
+    padding-top: 50px;
+  }
+
+  .main-header .navbar {
+    position: absolute;
+    top: 0;
+    background-color: transparent !important;
+  }
+}

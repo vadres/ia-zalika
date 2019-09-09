@@ -5,6 +5,8 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import AdminLTE, { Sidebar } from 'adminlte-2-react';
+
+import "./assets/css/custom.css";
 import CdStats from './views/cdStats';
 import InitDB from './views/initDB';
 

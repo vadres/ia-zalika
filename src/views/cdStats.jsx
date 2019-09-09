@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content, Divider, Row, Col, Box, Button, Inputs } from 'adminlte-2-react';
+import { Content, Row, Col, Box, Button, Inputs, Alert } from 'adminlte-2-react';
 
 import { teams, saveStats } from '../services/team';
 import { compound, onlyNumber } from '../services/format';
@@ -9,7 +9,7 @@ const { Select, Text } = Inputs;
 class CdStats extends Component {
   state = {
     team: "ala",
-    ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"",
+    stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" },
     message: "",
   }
   
@@ -18,7 +18,6 @@ class CdStats extends Component {
   }
   
   formatInput = (id, input) => {
-    id = id.toUpperCase();
     switch(id) {
       case "PS":  
       case "GP":  
@@ -35,45 +34,33 @@ class CdStats extends Component {
   }
 
   formatCompound = (id, input) => {
-    id = id.toUpperCase();
     switch(id) {
-      case "PS":  
-      case "GP":  
-      case "GC":  
-      case "NSG":  
-      case "NM":  
-        return true;
       case "MD":  
       case "VS":  
         return compound(input, 4);
       case "U6":  
         return compound(input, 2);
+      case "PS":  
+      case "GP":  
+      case "GC":  
+      case "NSG":  
+      case "NM":  
       default:
-        return true;  
+        return true;
     }
   }
 
   handleChangeInput = (e) => {
     try {
-      const id = e.target.id.toLowerCase();
-      let stat = this.state[id];
-      
-      if (!this.formatCompound(id, e.target.value)) {
-        this.setState({ ...this.state, message: "Algum campo está com formato errado" });
-      } else {
-        console.log("-" + this.formatInput(id, e.target.value))
-        stat = this.formatInput(e.target.value);  
-        const newState = this.state;
-        newState[id] = stat;
-        this.setState(newState);
-      }
+      const { id } = e.target;
+      let stat = this.formatInput(id, e.target.value);  
+      this.setState({ ...this.state, stats: { ...this.state.stats, [id.toLowerCase()]: stat }, message: "" });
     } catch(e){ 
       console.error(e); 
     }
   }
 
   handleClickSave = (e) => {
-    
   }
 
   render() {
@@ -83,11 +70,13 @@ class CdStats extends Component {
 
     return (<Content title="Save Stats" subTitle="Send stats to database" browserTitle="Zalika - Save Stats">
       <Row>
+        <Col xs={3}>
+          {(this.state.message.length > 0)? <Alert closable type="danger" icon="fa-ban" title="Algo deu errado!">{this.state.message}</Alert>: null}
+        </Col>
         <Col xs={12}>
           <Box
             type="info"
             title="Estatísticas"
-            bodyClassName="form-horizontal"
             footer={(
               <React.Fragment>
                 <Button text="Salvar" type="info" pullLeft />
@@ -95,9 +84,8 @@ class CdStats extends Component {
               </React.Fragment>  
             )}
             border>
-            <div className="container">
               <Row>
-                <Col xs={3}>
+                <Col md={4} lg={3}>
                     <Select
                       onChange={this.handleChangeSel}
                       id="Time" label="Time"
@@ -108,39 +96,54 @@ class CdStats extends Component {
                 </Col>
               </Row>
               <Row>
-            <Col xs={1}>
-              <Text onChange={this.handleChangeInput} id="PS" label="PS" labelPosition="above" placeholder="00" value={this.state.ps} />
-            </Col> 
-            <Col xs={1}>
-              <Text onChange={this.handleChangeInput} id="GP" label="GP" labelPosition="above" placeholder="00" value={this.state.gp} />
-            </Col> 
-            <Col xs={1}>
-              <Text onChange={this.handleChangeInput} id="GC" label="GC" labelPosition="above" placeholder="00" value={this.state.gc} />
-            </Col>  
-            <Col xs={1}>
-              <Text onChange={this.handleChangeInput} id="NSG" label="NSG" labelPosition="above" placeholder="00" value={this.state.nsg} />
-            </Col>  
-            <Col xs={1}>
-              <Text onChange={this.handleChangeInput} id="NM" label="NM" labelPosition="above" placeholder="00" value={this.state.nm} />
-            </Col>  
-            <Col xs={2}>
-              <Text onChange={this.handleChangeInput} id="MD" label="MD" labelPosition="above" placeholder="J-V-E-D" value={this.state.md} />
-            </Col>  
-            <Col xs={2}>
-              <Text onChange={this.handleChangeInput} id="VS" label="VS" labelPosition="above" placeholder="J-V-E-D" value={this.state.vs} />
-            </Col>  
-            <Col xs={2}>
-              <Text onChange={this.handleChangeInput} id="U6" label="U6" labelPosition="above" placeholder="PT-GP" value={this.state.u6} />
-            </Col>  
-              
-          </Row>
-            </div>
+                <Col md={4} lg={1}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="PS" label="PS" labelPosition="above" 
+                        placeholder="00" value={this.state.stats.ps} />
+                </Col> 
+                <Col md={4} lg={1}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="GP" label="GP" labelPosition="above" 
+                        placeholder="00" value={this.state.stats.gp} />
+                </Col> 
+                <Col md={4} lg={1}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="GC" label="GC" labelPosition="above" 
+                        placeholder="00" value={this.state.stats.gc} />
+                </Col>  
+                <Col md={4} lg={1}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="NSG" label="NSG" labelPosition="above" 
+                        placeholder="00" value={this.state.stats.nsg} />
+                </Col>  
+                <Col md={4} lg={1}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="NM" label="NM" labelPosition="above" 
+                        placeholder="00" value={this.state.stats.nm} />
+                </Col>  
+                <Col md={4} lg={2}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="MD" label="MD [J-V-E-D]" labelPosition="above" 
+                        placeholder="J-V-E-D" value={this.state.stats.md} />
+                </Col>  
+                <Col md={4} lg={2}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="VS" label="VS [J-V-E-D]" labelPosition="above" 
+                        placeholder="J-V-E-D" value={this.state.stats.vs} />
+                </Col>  
+                <Col md={4} lg={2}>
+                  <Text onChange={this.handleChangeInput} 
+                        id="U6" label="U6 [PT-GP]" labelPosition="above" 
+                        placeholder="PT-GP" value={this.state.stats.u6} />
+                </Col>  
+                  
+              </Row>
           </Box>
         </Col>
       </Row>
       <Row>
         <Col xs={3}>
-          <ul class="">
+          <ul className="">
             <li>PS  - Posição</li>
             <li>GP  - Gols pró</li>
             <li>GC  - Gols contra</li>
