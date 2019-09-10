@@ -61,6 +61,25 @@ class CdStats extends Component {
   }
 
   handleClickSave = (e) => {
+    const { team, stats } = this.state;
+
+    for (const [key, stat] of Object.entries(stats)) {
+      if (typeof stat === 'undefined' || stat === "" || !this.formatCompound(key.toUpperCase(), stat)){
+        this.setState({ ...this.state, message: "Algum campo está no formato incorreto" });
+        return;
+      }
+    }  
+    stats["time"] = new Date().getTime();
+    saveStats(team, stats); 
+    this.resetState();
+  }
+  
+  resetState = (e) => {
+    this.setState({
+      team: "ala",
+      stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" },
+      message: "",
+    });
   }
 
   render() {
@@ -79,8 +98,8 @@ class CdStats extends Component {
             title="Estatísticas"
             footer={(
               <React.Fragment>
-                <Button text="Salvar" type="info" pullLeft />
-                <Button text="Cancelar" pullRight />
+                <Button onClick={this.handleClickSave} text="Salvar" type="info" pullLeft />
+                <Button onClick={this.resetState} text="Cancelar" pullRight />
               </React.Fragment>  
             )}
             border>
@@ -91,7 +110,7 @@ class CdStats extends Component {
                       id="Time" label="Time"
                       labelPosition="above"
                       options={options}
-                      value={this.team}
+                      value={this.state.team}
                     />
                 </Col>
               </Row>

@@ -27,7 +27,7 @@ export function saveStats (team, stats){
   db.collection("teams")
     .doc(team)
     .collection("data")
-    .set(stats)
+    .add(stats)
     .then(function() {
       console.log("Stats successfully written!"); 
     })
@@ -38,7 +38,6 @@ export function saveStats (team, stats){
 
 export function initCollection() {
     for (const team of teams){
-      console.log(team);
       db.collection("teams")
         .doc(team.sigla)
         .set({ name: team.nome, initials: team.sigla })
