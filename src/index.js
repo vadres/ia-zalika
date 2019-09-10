@@ -3,30 +3,29 @@ import ReactDOM from "react-dom";
 
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
-import AdminLTE, { Sidebar } from 'adminlte-2-react';
+import { Container, Navbar } from 'react-bootstrap';
 
 import "./assets/css/custom.css";
 import CdStats from './views/cdStats';
 import InitDB from './views/initDB';
 
-const { Item } = Sidebar;
-
 class App extends Component {
-   
-  sidebar = [
-    <Item icon="fa-th" key="cd-stats" text="Save Stats" to="/cd-stats" />,
-    <Item id="xd" icon="fa-upload" key="init-db" text="Initialize" to="/init-db" />
-  ]
-
   render() {
     return (
-      <AdminLTE title={["IA", "Zalika"]} titleShort={["IA", "ZA"]} theme="green-light" sidebar={this.sidebar}>
-        <CdStats path="/cd-stats" />
-        <InitDB path="/init-db" />
-        <CdStats path="/" />
-      </AdminLTE>
-    );
+    <>
+      <Navbar bg="light">
+        <Navbar.Brand href="/cd-stats">
+          IA Zalika
+        </Navbar.Brand>
+      </Navbar>
+      <Router>
+        <div style={{marginTop: "10px" }}>
+          <Route exact path="/" component={CdStats} />
+          <Route path="/init-db" component={InitDB} />
+          <Route path="/cd-stats" component={CdStats} />
+        </div>
+      </Router>
+    </>);
   }
 }
 

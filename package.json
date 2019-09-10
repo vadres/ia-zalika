@@ -3,14 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "adminlte-2-react": "^0.1.27",
-    "bootstrap": "^3.3.7",
-    "chartist": "^0.10.1",
     "firebase": "^6.6.0",
-    "node-sass": "^4.12.0",
     "react": "^16.9.0",
-    "react-bootstrap": "^0.32.4",
-    "react-chartist": "^0.13.3",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1"
