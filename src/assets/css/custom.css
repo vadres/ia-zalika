@@ -2,6 +2,50 @@ body {
   background-color: #ecf0f5;
 }
 
+.navbar {
+  background-color: #00a65a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navbar-brand {
+  color: white !important;
+}
+
+.wrapper {
+  display: flex;
+  min-height: 94.21vh;
+}
+
+aside {
+  display: block;
+  background-color: #f9fafc;
+  border-right: 1px solid #d2d6de;
+  min-width: 200px;
+  min-height: 100%;
+}
+.sidemenu {
+  list-style: none;
+  margin: 0; /* To remove default bottom margin */ 
+  padding: 0;
+}
+
+.sidemenu >li>a {
+  padding: 12px 5px 12px 15px;
+  display: block;
+  text-decoration: none;
+  color: #221;
+}
+
+.sidemenu>li:hover>a, .sidemenu>li.active>a {
+  color: #000;
+  background: #f0f0f1;
+}
+
+.btn, .form-control {
+  border-radius: .02rem;
+}
+
 /*
  * Component: Box
  * --------------

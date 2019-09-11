@@ -82,7 +82,7 @@ class CdStats extends Component {
 
   render() {
     const options = teams.sort((a,b) => a.nome.localeCompare(b.nome)).map(el => (
-      { text: el.nome, value: el.sigla }
+      <option key={el.sigla} value={el.sigla}>{el.nome}</option>
     ));
 
     return (<Container>
@@ -91,63 +91,78 @@ class CdStats extends Component {
           {(this.state.message.length > 0)? <Alert closable type="danger" icon="fa-ban" title="Algo deu errado!">{this.state.message}</Alert>: null}
         </Col>
         <Col xs={12}>
-          <div className="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><font style={{verticalAlign: "inherit"}}><font style={{verticalAlign: "inherit"}}>Exemplo rápido</font></font></h3>
+          <div className="box box-success">
+            <div className="box-header with-border">
+              <h3 className="box-title"><font style={{verticalAlign: "inherit"}}><font style={{verticalAlign: "inherit"}}>Exemplo rápido</font></font></h3>
             </div>
             <Form>
               <div className="box-body">
                 <Row>
                   <Col md={4} lg={3}>
-                    {/* <Form.Select
-                        onChange={this.handleChangeSel}
-                        id="Time" label="Time"
-                        labelPosition="above"
-                        options={options}
-                        value={this.state.team}
-                    />*/}
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                      <Form.Label>Time</Form.Label>
+                      <Form.Control as="select" onChange={this.handleChangeSel} value={this.state.team}>
+                        {options} 
+                      </Form.Control>  
+                    </Form.Group>  
                   </Col>
                 </Row>
                 <Row>
                   <Col md={4} lg={1}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="PS" label="PS" labelPosition="above" 
-                          placeholder="00" value={this.state.stats.ps} />
+                    <Form.Group>
+                      <Form.Label>PS</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="PS" placeholder="00" value={this.state.stats.ps} />
+                    </Form.Group>    
                   </Col> 
                   <Col md={4} lg={1}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="GP" label="GP" labelPosition="above" 
-                          placeholder="00" value={this.state.stats.gp} />
+                    <Form.Group>
+                      <Form.Label>GP</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="GP" placeholder="00" value={this.state.stats.gp} />
+                    </Form.Group>      
                   </Col> 
                   <Col md={4} lg={1}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="GC" label="GC" labelPosition="above" 
-                          placeholder="00" value={this.state.stats.gc} />
+                    <Form.Group>
+                      <Form.Label>GC</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="GC" placeholder="00" value={this.state.stats.gc} />
+                    </Form.Group>      
                   </Col>  
                   <Col md={4} lg={1}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="NSG" label="NSG" labelPosition="above" 
-                          placeholder="00" value={this.state.stats.nsg} />
+                    <Form.Group>
+                      <Form.Label>NSG</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="NSG" placeholder="00" value={this.state.stats.nsg} />
+                    </Form.Group>      
                   </Col>  
                   <Col md={4} lg={1}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="NM" label="NM" labelPosition="above" 
-                          placeholder="00" value={this.state.stats.nm} />
+                    <Form.Group>
+                      <Form.Label>NM</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="NM" placeholder="00" value={this.state.stats.nm} />
+                    </Form.Group>      
                   </Col>  
                   <Col md={4} lg={2}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="MD" label="MD [J-V-E-D]" labelPosition="above" 
-                          placeholder="J-V-E-D" value={this.state.stats.md} />
+                    <Form.Group>
+                      <Form.Label>MD [J-V-E-D]</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="MD" placeholder="J-V-E-D" value={this.state.stats.md} />
+                    </Form.Group>      
                   </Col>  
                   <Col md={4} lg={2}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="VS" label="VS [J-V-E-D]" labelPosition="above" 
-                          placeholder="J-V-E-D" value={this.state.stats.vs} />
+                    <Form.Group>
+                      <Form.Label>VS [J-V-E-D]</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="VS" placeholder="J-V-E-D" value={this.state.stats.vs} />
+                    </Form.Group>      
                   </Col>  
                   <Col md={4} lg={2}>
-                    <Form.Control onChange={this.handleChangeInput} 
-                          id="U6" label="U6 [PT-GP]" labelPosition="above" 
-                          placeholder="PT-GP" value={this.state.stats.u6} />
+                    <Form.Group>
+                      <Form.Label>U6 [PT-GP]</Form.Label>
+                      <Form.Control onChange={this.handleChangeInput} 
+                          id="U6" placeholder="PT-GP" value={this.state.stats.u6} />
+                    </Form.Group>      
                   </Col>  
                 </Row>
               </div>  
