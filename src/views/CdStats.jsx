@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form, Alert } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { teams, saveStats } from '../services/team';
 import { compound, onlyNumber } from '../services/format';
@@ -52,7 +53,7 @@ class CdStats extends Component {
     try {
       const { id } = e.target;
       let stat = this.formatInput(id, e.target.value);  
-      this.setState({ ...this.state, stats: { ...this.state.stats, [id.toLowerCase()]: stat }, message: "" });
+      this.setState({ ...this.state, stats: { ...this.state.stats, [id.toLowerCase()]: stat } });
     } catch(e){ 
       console.error(e); 
     }
@@ -63,7 +64,7 @@ class CdStats extends Component {
 
     for (const [key, stat] of Object.entries(stats)) {
       if (typeof stat === 'undefined' || stat === "" || !this.formatCompound(key.toUpperCase(), stat)){
-        this.setState({ ...this.state, message: "Algum campo está no formato incorreto" });
+        toast.warn("Algum campo está no formato incorreto!");
         return;
       }
     }  
@@ -87,13 +88,10 @@ class CdStats extends Component {
 
     return (<Container>
       <Row>
-        <Col xs={3}>
-          {(this.state.message.length > 0)? <Alert closable type="danger" icon="fa-ban" title="Algo deu errado!">{this.state.message}</Alert>: null}
-        </Col>
         <Col xs={12}>
           <div className="box box-success">
             <div className="box-header with-border">
-              <h3 className="box-title"><font style={{verticalAlign: "inherit"}}><font style={{verticalAlign: "inherit"}}>Exemplo rápido</font></font></h3>
+              <h3 className="box-title"><font style={{verticalAlign: "inherit"}}><font style={{verticalAlign: "inherit"}}>Cadastrando Estatísticas</font></font></h3>
             </div>
             <Form>
               <div className="box-body">
@@ -167,8 +165,8 @@ class CdStats extends Component {
                 </Row>
               </div>  
               <div className="box-footer">
-                <Button variant="success">Salvar</Button>  
-                <Button className="float-right" variant="secondary">Cancelar</Button>  
+                <Button onClick={this.handleClickSave} variant="success">Salvar</Button>  
+                <Button onClick={this.resetState} className="float-right" variant="info">Cancelar</Button>  
               </div>
             </Form>
           </div>
