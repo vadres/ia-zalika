@@ -1,92 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Form, Alert } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 
-import { teams, saveStats } from '../services/team';
-import { compound, onlyNumber } from '../services/format';
-
-class CdStats extends Component {
-  state = {
-    team: "ala",
-    stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" },
-    message: "",
-  }
-  
-  handleChangeSel = (e) => {
-    this.setState({ ...this.state, team: e.target.value });
-  }
-  
-  formatInput = (id, input) => {
-    switch(id) {
-      case "PS":  
-      case "GP":  
-      case "GC":  
-      case "NSG":  
-      case "NM":  
-        return onlyNumber(input);
-      case "MD":  
-      case "VS":  
-      case "U6":  
-      default:
-        return input;  
-    }
-  }
-
-  formatCompound = (id, input) => {
-    switch(id) {
-      case "MD":  
-      case "VS":  
-        return compound(input, 4);
-      case "U6":  
-        return compound(input, 2);
-      case "PS":  
-      case "GP":  
-      case "GC":  
-      case "NSG":  
-      case "NM":  
-      default:
-        return true;
-    }
-  }
-
-  handleChangeInput = (e) => {
-    try {
-      const { id } = e.target;
-      let stat = this.formatInput(id, e.target.value);  
-      this.setState({ ...this.state, stats: { ...this.state.stats, [id.toLowerCase()]: stat } });
-    } catch(e){ 
-      console.error(e); 
-    }
-  }
-
-  handleClickSave = (e) => {
-    const { team, stats } = this.state;
-
-    for (const [key, stat] of Object.entries(stats)) {
-      if (typeof stat === 'undefined' || stat === "" || !this.formatCompound(key.toUpperCase(), stat)){
-        toast.warn("Algum campo está no formato incorreto!");
-        return;
-      }
-    }  
-    stats["time"] = new Date().getTime();
-    saveStats(team, stats); 
-    this.resetState();
-  }
-  
-  resetState = (e) => {
-    this.setState({
-      team: "ala",
-      stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" },
-      message: "",
-    });
-  }
-
+class StatsComponent extends Component {
   render() {
-    const options = teams.sort((a,b) => a.nome.localeCompare(b.nome)).map(el => (
+    let options = this.state.teams.sort((a,b) => a.nome.localeCompare(b.nome)).map(el => (
       <option key={el.sigla} value={el.sigla}>{el.nome}</option>
     ));
 
-    return (<Container>
+    return (<Container fluid className="ml-1">
       <Row>
         <Col xs={12}>
           <div className="box box-success">
@@ -190,4 +111,4 @@ class CdStats extends Component {
   }
 }
 
-export default CdStats;
+export default StatsComponent;

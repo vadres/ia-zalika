@@ -1,31 +1,19 @@
 import { db } from '../config/firebase.cfg';
 
-export const teams  =  [
-    { sigla: "pal", nome: "Palmeiras"},
-    { sigla: "fla", nome: "Flamengo"},
-    { sigla: "gre", nome: "Grêmio"},
-    { sigla: "sao", nome: "São Paulo"},
-    { sigla: "san", nome: "Santos FC"},
-    { sigla: "cor", nome: "Corinthians"},
-    { sigla: "int", nome: "Internacional"},
-    { sigla: "flu", nome: "Fluminense"},
-    { sigla: "cam", nome: "Atlético-MG"},
-    { sigla: "cru", nome: "Cruzeiro"},
-    { sigla: "cap", nome: "Athletico-PR"},
-    { sigla: "vas", nome: "Vasco da Gama"},
-    { sigla: "bah", nome: "Bahia"},
-    { sigla: "bot", nome: "Botafogo"},
-    { sigla: "cha", nome: "Chapecoense"},
-    { sigla: "for", nome: "Fortaleza"},
-    { sigla: "goi", nome: "Goiás EC"},
-    { sigla: "cea", nome: "Ceará SC"},
-    { sigla: "ala", nome: "Alagoano"},
-    { sigla: "ava", nome: "Avaí FC"}
-];
+export const getTeams  = _getTeams();
+
+async function _getTeams() {
+  const snapshot =  await db.collection("teams").get();
+  const teams = [];
+  snapshot.forEach(function(doc) {
+    teams.push({ sigla: doc.id, nome: doc.data().name });
+  });
+  return teams;
+};
 
 export function saveStats (team, stats){
   db.collection("teams")
-    .doc(team)
+    .doc(getTeams)
     .collection("data")
     .add(stats)
     .then(function() {
@@ -37,7 +25,7 @@ export function saveStats (team, stats){
 }
 
 export function initCollection() {
-    for (const team of teams){
+    for (const team of getTeams){
       db.collection("teams")
         .doc(team.sigla)
         .set({ name: team.nome, initials: team.sigla })
