@@ -6,7 +6,7 @@ import { getTeams } from '../ducks/stats/operations'
 function* fetchTeams() {
   try {
     const teams = yield call(getTeams);  
-    yield put(Creators.receiveTeams(teams));
+    yield put(Creators.statsReceiveTeams(teams));
   } catch(e) {
     console.log(e)
   }
@@ -14,6 +14,6 @@ function* fetchTeams() {
 
 export function* statsSagas(){
   yield all([
-    takeLatest(Types.REQUEST_TEAMS, fetchTeams) 
+    takeLatest(Types.STATS_REQUEST_TEAMS, fetchTeams) 
   ]);
 }

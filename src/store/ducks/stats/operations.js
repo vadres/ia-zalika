@@ -9,12 +9,7 @@ export async function getTeams() {
   return teams;
 };
 
-/*
-const handleChangeSel = (e) => {
-  this.setState({ ...this.state, team: e.target.value });
-}
-
-const formatInput = (id, input) => {
+export const formatInput = (id, input) => {
   switch(id) {
     case "PS":  case "GP":  case "GC":  case "NSG":  case "NM":  
       return onlyNumber(input);
@@ -23,7 +18,7 @@ const formatInput = (id, input) => {
   }
 }
 
-const formatCompound = (id, input) => {
+export const formatCompound = (id, input) => {
   switch(id) {
     case "MD":  case "VS":  
       return compound(input, 4);
@@ -57,12 +52,3 @@ const handleClickSave = (e) => {
   saveStats(team, stats); 
   this.resetState();
 }
-
-const resetState = (e) => {
-  this.setState({
-    team: "ala",
-    stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" },
-    message: "",
-  });
-}
-*/
