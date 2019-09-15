@@ -28,7 +28,7 @@ class App extends Component {
           <SidebarItem href="/">
             <FontAwesomeIcon className="sideicon" icon={faDatabase}/>Informações
           </SidebarItem>
-          <SidebarItem href="/matchs">
+          <SidebarItem href="/clashes">
             <FontAwesomeIcon className="sideicon" icon={faSubscript}/>Confrontos
           </SidebarItem>
           <SidebarItem href="/init-db" disabled={true} onClick={() => { toast.error("Usuário Sem Permissão") } }>
@@ -44,7 +44,7 @@ class App extends Component {
 
               <Route exact path="/" component={Stats} />
               <Route path="/init-db" component={InitDB} />
-              <Route path="/matchs" component={Clashes} />
+              <Route path="/clashes" component={Clashes} />
             </div>
             <Footer />
           </section>
