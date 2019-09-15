@@ -1,7 +1,6 @@
 import { toast } from 'react-toastify';
 import { db } from '../../../config/firebase.cfg';
 import store from '../../index';
-import { formatCompound } from '../../../services/format';
 
 export async function getTeams() {
   const snapshot =  await db.collection("teams").get();
@@ -12,26 +11,29 @@ export async function getTeams() {
   return teams;
 };
 
-export async function saveStats () {
-  const { team, stats } = store.getState().stats;
-  console.log(team, stats);
-  
-  for (const [key, stat] of Object.entries(stats)) {
-    if (typeof stat === 'undefined' || stat === "" || !formatCompound(key.toUpperCase(), stat)){
+export async function saveClash () {
+  const clash = { ...store.getState().clashes };
+  delete clash.teams;
+  console.log(clash);
+  for (let key in clash) {
+    if (typeof clash[key] === 'undefined' || clash[key] === ""){
       toast.warn("Algum campo está no formato incorreto!");
       return false;
     }
   }  
-  stats['time'] = new Date().getTime();
-  db.collection("teams")
-    .doc(team)
-    .collection("data")
-    .add(stats)
+  if (clash.visitor == clash.client){
+    toast.warn("O confronto esta com times iguais!");
+    return false;
+  }
+
+  clash['time'] = new Date().getTime();
+  db.collection("clashes")
+    .add(clash)
     .then(function() {
       toast.info("Tudo certo! Dados salvos");
     })
     .catch(function(error) {
-      toast.error("Error writing stats: ", error);
+      toast.error("Error writing clash: ", error);
     });
     
   return true;  

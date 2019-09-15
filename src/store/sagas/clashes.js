@@ -1,7 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
-import { Types, Creators } from '../ducks/stats/reducers' 
-import { getTeams, saveStats } from '../ducks/stats/operations'
+import { Types, Creators } from '../ducks/clashes/reducers' 
+import { getTeams, saveClash } from '../ducks/clashes/operations'
 
 function* fetchTeams() {
   try {
@@ -12,10 +12,10 @@ function* fetchTeams() {
   }
 }
 
-function* insertStats() {
+function* insertClash() {
   try {
    
-    const response = yield call(saveStats);  
+    const response = yield call(saveClash);  
     if (response)
       yield put(Creators.resetState());
 
@@ -24,9 +24,9 @@ function* insertStats() {
   }
 }
 
-export function* statsSagas(){
+export function* clashesSagas(){
   yield all([
     takeLatest(Types.STATS_REQUEST_TEAMS, fetchTeams),
-    takeLatest(Types.SAVE_STATS, insertStats) 
+    takeLatest(Types.SAVE_CLASH, insertClash) 
   ]);
 }

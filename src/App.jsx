@@ -12,7 +12,7 @@ import InitDB from './views/Admin';
 import Sidebar from './components/sidebar/Sidebar';
 import SidebarItem from './components/sidebar/SidebarItem';
 import Footer from './components/footer/Footer';
-import Matchs from './views/Matchs';
+import Clashes from './views/clashes/ClashesContainer';
 
 class App extends Component {
   render() {
@@ -44,7 +44,7 @@ class App extends Component {
 
               <Route exact path="/" component={Stats} />
               <Route path="/init-db" component={InitDB} />
-              <Route path="/matchs" component={Matchs} />
+              <Route path="/matchs" component={Clashes} />
             </div>
             <Footer />
           </section>

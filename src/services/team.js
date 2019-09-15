@@ -25,7 +25,8 @@ export function saveStats (team, stats){
 }
 
 export function initCollection() {
-    for (const team of getTeams){
+  getTeams.then(teams => {
+    for (const team of teams){
       db.collection("teams")
         .doc(team.sigla)
         .set({ name: team.nome, initials: team.sigla })
@@ -36,4 +37,5 @@ export function initCollection() {
           console.error("Error writing document: ", error);
         });
     }
-  }
+  });
+}

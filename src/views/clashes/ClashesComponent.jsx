@@ -1,21 +1,15 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
-import { getTeams } from '../services/team'; 
-
-class Matchs extends React.Component {
-  constructor(props) {
-    super(props);
-    getTeams().then(teams => console.log(teams));
+class ClashesComponent extends React.Component {
+  componentDidMount(){
+    this.props.fetchTeams();
   }
   
-
-  state = { 
-    teams: []
-  };
-
   render() { 
-    const options = this.state.teams.sort((a,b) => a.nome.localeCompare(b.nome)).map(el => (
+    const { teams, client, clientGols, visitor, visitorGols, changeAttr, resetState, saveClash } = this.props;
+
+    const options = teams.sort((a,b) => a.nome.localeCompare(b.nome)).map(el => (
       <option key={el.sigla} value={el.sigla}>{el.nome}</option>
     ));
 
@@ -33,7 +27,7 @@ class Matchs extends React.Component {
                     <Col md={3}>
                       <Form.Group controlId="exampleForm.ControlSelect1">
                         <Form.Label>Mandante</Form.Label>
-                        <Form.Control as="select" onChange={this.handleChangeSel} value={this.state.team}>
+                        <Form.Control as="select" onChange={(e) => { changeAttr("client", e.target.value) } } value={client}>
                           {options} 
                         </Form.Control>  
                       </Form.Group>
@@ -42,14 +36,16 @@ class Matchs extends React.Component {
                       <Form.Group>
                         <Form.Label>Gols</Form.Label>
                         <Form.Control 
-                            id="PS" placeholder="00"  />
+                            id="PS" placeholder="00" 
+                            onChange={(e) => { changeAttr("clientGols", e.target.value) } } 
+                            value={clientGols} />
                       </Form.Group> 
                     </Col>
                     <Col md={1} style={{textAlign: "center"}}>X</Col>
                     <Col md={3}>
                       <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Label>Mandante</Form.Label>
-                        <Form.Control as="select" onChange={this.handleChangeSel} value={this.state.team}>
+                        <Form.Label>Visitante</Form.Label>
+                        <Form.Control as="select" onChange={(e) => { changeAttr("visitor", e.target.value) } } value={visitor}>
                           {options} 
                         </Form.Control>  
                       </Form.Group>
@@ -58,14 +54,16 @@ class Matchs extends React.Component {
                       <Form.Group>
                         <Form.Label>Gols</Form.Label>
                         <Form.Control 
-                            id="PS" placeholder="00"  />
+                            id="PS" placeholder="00"
+                            onChange={(e) => { changeAttr("visitorGols", e.target.value) } } 
+                            value={visitorGols}  />
                       </Form.Group> 
                     </Col>      
                   </Row>
                 </div>  
                 <div className="box-footer">
-                  <Button onClick={this.handleClickSave} variant="success">Salvar</Button>  
-                  <Button onClick={this.resetState} className="float-right" variant="info">Cancelar</Button>  
+                  <Button onClick={() => { saveClash() } } variant="success">Salvar</Button>  
+                  <Button onClick={() => { resetState() } } className="float-right" variant="info">Cancelar</Button>  
                 </div>
               </Form>
             </div>
@@ -76,4 +74,4 @@ class Matchs extends React.Component {
   }
 }
  
-export default Matchs;
+export default ClashesComponent;

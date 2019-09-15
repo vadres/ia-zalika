@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { Creators } from '../../store/ducks/stats/reducers';
 import StatsComponent from './StatsComponent';
-import { formatInput, formatCompound } from '../../store/ducks/stats/operations';
+import { formatInput } from '../../services/format';
 
 const mapStateToProps = (state) => ({
   ...state.stats
@@ -14,10 +14,22 @@ const mapDispatchToProps = (dispatch) => {
   };
 
   const changeStat = (stat, value) => {
-    dispatch(Creators.changeStat(stat, formatInput(value)));
+    dispatch(Creators.changeStat(stat, formatInput(stat, value)));
   };
 
-  return { fetchTeams, changeStat };
+  const changeTeam = (value) => {
+    dispatch(Creators.changeTeam(value));
+  };
+  
+  const saveStats = (team, stats) => {
+    dispatch(Creators.saveStats(team, stats));
+  };
+
+  const resetState = () => {
+    dispatch(Creators.resetState());
+  };
+
+  return { fetchTeams, changeStat, changeTeam, saveStats, resetState };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatsComponent);
