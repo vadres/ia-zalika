@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 class ClashesComponent extends React.Component {
   componentDidMount(){
     this.props.fetchTeams();
+    document.title = "IA Zalika - Confrontos";
   }
   
   render() { 

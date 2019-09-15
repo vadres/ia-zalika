@@ -6,6 +6,7 @@ import { initCollection } from '../../services/team';
 class StatsComponent extends Component {
   componentDidMount(){
     this.props.fetchTeams();
+    document.title = "IA Zalika - Estatísticas";
   }
 
   render() {
