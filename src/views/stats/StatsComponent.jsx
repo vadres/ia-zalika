@@ -103,7 +103,7 @@ class StatsComponent extends Component {
         </Col>
       </Row>
       <Row>
-        <Col xs={3}>
+        <Col>
           <ul className="">
             <li>PS  - Posição</li>
             <li>GP  - Gols pró</li>
