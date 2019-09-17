@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import '../../services/zalika';
 import AdminComponent from './AdminComponent';
 
 const mapStateToProps = (state) => (state);
