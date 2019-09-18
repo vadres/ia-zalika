@@ -1,15 +1,26 @@
 import * as synaptic from 'synaptic';
+import { teams, clashes } from '../services/team';
 
-const { Trainer, Architect } = synaptic;
+const { Architect } = synaptic;
 
-var myPerceptron = new Architect.Perceptron(2,15,1);
-var myTrainer = new Trainer(myPerceptron);
+var learnRate = .3;
+var myPerceptron = new Architect.Perceptron(30,15,3);
 
-myTrainer.XOR(); // { error: 0.004998819355993572, iterations: 21871, time: 356 }
+//trainer
+for (var i = 0; i < 20000; i++) {
+  // 0 xor 0 => 0
+    myNetwork.activate([0,0]);
+    myNetwork.propagate(learningRate, [0]);
+  // 0 xor 1 => 1
+    myNetwork.activate([0,1]);
+    myNetwork.propagate(learningRate, [1]);
+  // 1 xor 0 => 1
+    myNetwork.activate([1,0]);
+    myNetwork.propagate(learningRate, [1]);
+  // 1 xor 1 => 0
+    myNetwork.activate([1,1]);
+    myNetwork.propagate(learningRate, [0]);
+  }
 
-myPerceptron.activate([0,0]); // 0.0268581547421616
-myPerceptron.activate([1,0]); // 0.9829673642853368
-myPerceptron.activate([0,1]); // 0.9831714267395621
-myPerceptron.activate([1,1]); // 0.02128894618097928
-
-console.log(myPerceptron.toJSON());
+  //teste
+  console.log(myNetwork.activate([0,0])); 

@@ -10,6 +10,13 @@ class Modal extends React.Component {
     redirect: false
   }
   
+  componentDidMount = () => {
+    document.getElementById("credential").addEventListener("keypress", e => { 
+      if (e.key === "Enter")
+        this.auth(); 
+    });
+  }
+
   changeCredential = (e) => {
     this.setState({ 
       ...this.state, 
@@ -49,6 +56,7 @@ class Modal extends React.Component {
                   <Form.Group controlId="exampleForm.ControlSelect1">
                     <Form.Label>Credencial</Form.Label>
                     <Form.Control 
+                      id="credential"
                       placeholder="0000.0000.000-00" 
                       onChange={ this.changeCredential } />
                   </Form.Group>  
