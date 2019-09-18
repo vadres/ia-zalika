@@ -2,7 +2,7 @@ import * as synaptic from 'synaptic';
 
 const { Trainer, Architect } = synaptic;
 
-var myPerceptron = new Architect.Perceptron(30,15,3);
+var myPerceptron = new Architect.Perceptron(2,15,1);
 var myTrainer = new Trainer(myPerceptron);
 
 myTrainer.XOR(); // { error: 0.004998819355993572, iterations: 21871, time: 356 }
