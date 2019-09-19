@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 
-import { initCollection } from '../../services/team';
-
 class StatsComponent extends Component {
   componentDidMount(){
     this.props.fetchTeams();
@@ -21,7 +19,7 @@ class StatsComponent extends Component {
         <Col xs={12}>
           <div className="box box-success">
             <div className="box-header with-border">
-              <h3 className="box-title"><font style={{verticalAlign: "inherit"}}><font style={{verticalAlign: "inherit"}}>Cadastrando Estatísticas</font></font></h3>
+              <h3 className="box-title">Cadastrando Estatísticas</h3>
             </div>
             <Form>
               <div className="box-body">
@@ -105,6 +103,7 @@ class StatsComponent extends Component {
       <Row>
         <Col>
           <ul className="">
+            <li>PT  - Pontos</li>
             <li>PS  - Posição</li>
             <li>GP  - Gols pró</li>
             <li>GC  - Gols contra</li>

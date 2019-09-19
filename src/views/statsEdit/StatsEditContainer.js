@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { Creators } from '../../store/ducks/stats/reducers';
-import StatsComponent from './StatsComponent';
+import { Creators } from '../../store/ducks/statsEdit/reducers';
+import StatsComponent from './StatsEditComponent';
 import { formatInput } from '../../services/format';
 
 const mapStateToProps = (state) => ({
@@ -21,15 +21,15 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(Creators.changeTeam(value));
   };
   
-  const saveStats = (team, stats) => {
-    dispatch(Creators.saveStats(team, stats));
+  const updateStats = (team, stats) => {
+    dispatch(Creators.updateStats(team, stats));
   };
 
   const resetState = () => {
     dispatch(Creators.resetState());
   };
 
-  return { fetchTeams, changeStat, changeTeam, saveStats, resetState };
+  return { fetchTeams, changeStat, changeTeam, updateStats, resetState };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatsComponent);

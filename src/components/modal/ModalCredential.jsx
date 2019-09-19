@@ -4,17 +4,19 @@ import { Redirect } from 'react-router-dom';
 
 import { variables } from '../../variables';
 
-class Modal extends React.Component {
+class ModalCredential extends React.Component {
   state = {
     credential: "",
     redirect: false
   }
   
   componentDidMount = () => {
-    document.getElementById("credential").addEventListener("keypress", e => { 
-      if (e.key === "Enter")
-        this.auth(); 
-    });
+    const creel = document.getElementById("credential")
+    if (creel)
+      creel.addEventListener("keypress", e => { 
+        if (e.key === "Enter")
+          this.auth(); 
+      });
   }
 
   changeCredential = (e) => {
@@ -74,4 +76,4 @@ class Modal extends React.Component {
   }
 }
 
-export default Modal;
+export default ModalCredential;

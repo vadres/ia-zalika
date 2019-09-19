@@ -6,12 +6,13 @@ export const { Types, Creators }  = createActions({
   changeStat: ['stat', 'value'],
   changeTeam: ['value'],
   resetState: null,
-  saveStats: null
+  updateStats: null
 });
 
 const INITIAL_STATE = {
   teams: [],
   team: "ala",
+  id: "",
   stats: { ps:"",gp:"",gc:"",nsg:"",nm:"",md:"",vs:"",u6:"" }
 };
 

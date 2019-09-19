@@ -1,7 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
-import { Types, Creators } from '../ducks/stats/reducers' 
-import { getTeams, saveStats } from '../ducks/stats/operations'
+import { Types, Creators } from '../ducks/statsEdit/reducers' 
+import { getTeams, updateStats } from '../ducks/statsEdit/operations'
 
 function* fetchTeams() {
   try {
@@ -15,7 +15,7 @@ function* fetchTeams() {
 function* insertStats() {
   try {
    
-    const response = yield call(saveStats);  
+    const response = yield call(updateStats);  
     if (response)
       yield put(Creators.resetState());
 
@@ -24,9 +24,9 @@ function* insertStats() {
   }
 }
 
-export function* statsSagas(){
+export function* statsEditSagas(){
   yield all([
     takeLatest(Types.REQUEST_TEAMS, fetchTeams),
-    takeLatest(Types.SAVE_STATS, insertStats) 
+    takeLatest(Types.UPDATE_STATS, insertStats) 
   ]);
 }

@@ -2,18 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDatabase, faSubscript, faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faDatabase, faSubscript, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import "./assets/css/custom.css";
 import Stats from './views/stats/StatsContainer';
+import StatsEdit from './views/statsEdit/StatsEditContainer';
 import Sidebar from './components/sidebar/Sidebar';
 import SidebarItem from './components/sidebar/SidebarItem';
 import Footer from './components/footer/Footer';
 import Clashes from './views/clashes/ClashesContainer';
 import Admin from './views/admin/AdminContainer';
-import Modal from './components/modal/Modal';
+import ModalCredential from './components/modal/ModalCredential';
 
 const App = () => {
   const [modalShow, setModalShow] = React.useState(false);
@@ -28,7 +29,10 @@ const App = () => {
     <div className="wrapper">
       <Sidebar title="Navegação">
         <SidebarItem href="/">
-          <FontAwesomeIcon className="sideicon" icon={faDatabase}/>Informações
+          <FontAwesomeIcon className="sideicon" icon={faPlus}/>Informações
+        </SidebarItem>
+        <SidebarItem href="/stats-edit">
+          <FontAwesomeIcon className="sideicon" icon={faDatabase}/>Ver Informações
         </SidebarItem>
         <SidebarItem href="/clashes">
           <FontAwesomeIcon className="sideicon" icon={faSubscript}/>Confrontos
@@ -45,13 +49,14 @@ const App = () => {
             </div>
 
             <Route exact path="/" component={Stats} />
+            <Route exact path="/stats-edit" component={StatsEdit} />
             <Route path="/admin-iaz" component={Admin} />
             <Route path="/clashes" component={Clashes} />
           </div>
           <Footer />
         </section>
         
-        <Modal 
+        <ModalCredential 
           show={modalShow}
           onHide={() => setModalShow(false)}
         />
