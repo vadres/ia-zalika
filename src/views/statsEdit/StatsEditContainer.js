@@ -5,28 +5,28 @@ import StatsComponent from './StatsEditComponent';
 import { formatInput } from '../../services/format';
 
 const mapStateToProps = (state) => ({
-  ...state.stats
+  ...state.statsEdit
 });
 
 const mapDispatchToProps = (dispatch) => {
   const fetchTeams = () => {
-    dispatch(Creators.requestTeams());
+    dispatch(Creators.editRequestTeams());
   };
 
   const changeStat = (stat, value) => {
-    dispatch(Creators.changeStat(stat, formatInput(stat, value)));
+    dispatch(Creators.editChangeStat(stat, formatInput(stat, value)));
   };
 
   const changeTeam = (value) => {
-    dispatch(Creators.changeTeam(value));
+    dispatch(Creators.editChangeTeam(value));
   };
   
   const updateStats = (team, stats) => {
-    dispatch(Creators.updateStats(team, stats));
+    dispatch(Creators.editUpdateStats(team, stats));
   };
 
   const resetState = () => {
-    dispatch(Creators.resetState());
+    dispatch(Creators.editResetState());
   };
 
   return { fetchTeams, changeStat, changeTeam, updateStats, resetState };

@@ -6,7 +6,7 @@ import { getTeams, updateStats } from '../ducks/statsEdit/operations'
 function* fetchTeams() {
   try {
     const teams = yield call(getTeams);  
-    yield put(Creators.receiveTeams(teams));
+    yield put(Creators.editReceiveTeams(teams));
   } catch(e) {
     console.log(e)
   }
@@ -26,7 +26,7 @@ function* insertStats() {
 
 export function* statsEditSagas(){
   yield all([
-    takeLatest(Types.REQUEST_TEAMS, fetchTeams),
-    takeLatest(Types.UPDATE_STATS, insertStats) 
+    takeLatest(Types.EDIT_REQUEST_TEAMS, fetchTeams),
+    takeLatest(Types.EDIT_UPDATE_STATS, insertStats) 
   ]);
 }

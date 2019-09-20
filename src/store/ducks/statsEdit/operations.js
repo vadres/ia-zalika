@@ -4,28 +4,36 @@ import store from '../../index';
 import { formatCompound } from '../../../services/format';
 
 export async function getTeams() {
-  db.collection("teams")
-    .get()
-    .then(function(teamsSnap) {
-      teamsSnap.forEach(function(doc) {
-        db.collection("teams")
-          .doc(doc.id)
-          .collection("data")
-          .get()
-          .then(function(dataSnap) {
-            dataSnap.forEach(function(docIn) {
-              console.log(doc.id + " => " + docIn.data());
-            })
-          });
-      });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
-
   const teams = [];
-
-  return teams;
+  return new Promise(function(resolve, reject) {
+    db.collection("teams")
+      .get()
+      .then(function(teamsSnap) {
+        teamsSnap.forEach(function(doc) {
+          db.collection("teams")
+            .doc(doc.id)
+            .collection("data")
+            .get()
+            .then(function(dataSnap) {
+              dataSnap.forEach(function(docIn) {
+                for (let team of teams){
+                  if (team.initials === doc.id){
+                    team.data.push({ ...docIn.data() });
+                    return;
+                  }
+                }
+                teams.push({ ...doc.data(), data: [{ ...docIn.data() }] });
+                console.log(teams.length);
+              })
+              resolve(teams);
+            });
+        });
+      })
+      .catch(function(error) {
+          console.log("Error getting documents: ", error);
+          reject("Error getting documents: ", error);
+      });
+  }) 
 };
 
 export async function updateStats () {
