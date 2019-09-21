@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Form, ListGroup, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Table } from 'react-bootstrap';
 
 import { formatDate } from '../../services/format';
 
@@ -14,28 +14,43 @@ class StatsEditComponent extends Component {
     console.log(teams);
     const mapStats = (stats) => (
       stats.map((stat, key) => (
-        <ListGroup.Item key={key}>
-          <b style={{marginRight: "15px", fontSize: "16px" }}>Data:<Badge variant="info">{formatDate(new Date(stat.time))}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>PS:<Badge variant="success">{stat.ps}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>GP:<Badge variant="success">{stat.gp}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>GC:<Badge variant="success">{stat.gc}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>NSG:<Badge variant="success">{stat.nsg}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>NM:<Badge variant="success">{stat.nm}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>MD:<Badge variant="success">{stat.md}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>VS:<Badge variant="success">{stat.vs}</Badge></b>
-          <b style={{marginLeft: "15px", fontSize: "16px" }}>U6:<Badge variant="success">{stat.u6}</Badge></b> 
-        </ListGroup.Item>
+        <tr>
+          <td key={key}>{formatDate(new Date(stat.time))}</td>
+          <td key={key}>{stat.ps}</td>
+          <td key={key}>{stat.gp}</td>
+          <td key={key}>{stat.gc}</td>
+          <td key={key}>{stat.nsg}</td>
+          <td key={key}>{stat.nm}</td>
+          <td key={key}>{stat.md}</td>
+          <td key={key}>{stat.vs}</td>
+          <td key={key}>{stat.u6}</td>
+        </tr>  
       ))
     );
 
     const list = teams.map((team, key) => {
       return (
-        <ListGroup.Item key={key}>
-          <Button>{team.name}</Button>
-          <ListGroup>
-            {mapStats(team.data)}
-          </ListGroup>
-        </ListGroup.Item>
+        <div class="list-teams">
+          <span className="h4">{team.name}</span>
+          <Table striped bordered hover key={key}>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>PS</th>
+                <th>GP</th>
+                <th>GC</th>
+                <th>NSG</th>
+                <th>NM</th>
+                <th>MD</th>
+                <th>VS</th>
+                <th>U6</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mapStats(team.data)}
+            </tbody>
+          </Table>
+        </div>
       );
     });
 
@@ -47,9 +62,9 @@ class StatsEditComponent extends Component {
               <h3 className="box-title">Estatísticas Gerais</h3>
             </div>
             <div className="box-body">
-              <ListGroup variant="flush">
+              <span variant="flush">
                 {list}
-              </ListGroup>
+              </span>
             </div>
           </div>  
         </Col>

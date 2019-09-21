@@ -449,3 +449,13 @@ aside {
 .Toastify__progress-bar {
   background-color: rgba(255, 255, 255, 0.25);
 }
+
+.list-teams {
+  color: rgb(52, 126, 52);
+  padding-bottom: 30px;
+}
+
+.list-teams .h4 {
+  font-size: 18px;
+  text-transform: uppercase;
+}

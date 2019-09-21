@@ -5,6 +5,7 @@ import { formatCompound } from '../../../services/format';
 
 export async function getTeams() {
   const teams = [];
+  let i = 0;
   return new Promise(function(resolve, reject) {
     db.collection("teams")
       .get()
@@ -13,25 +14,27 @@ export async function getTeams() {
           db.collection("teams")
             .doc(doc.id)
             .collection("data")
+            .orderBy("time", "desc")
             .get()
             .then(function(dataSnap) {
               dataSnap.forEach(function(docIn) {
                 for (let team of teams){
                   if (team.initials === doc.id){
                     team.data.push({ ...docIn.data() });
+                    if (++i === teamsSnap.size)
+                      resolve(teams);
                     return;
                   }
                 }
                 teams.push({ ...doc.data(), data: [{ ...docIn.data() }] });
-                console.log(teams.length);
               })
-              resolve(teams);
+              if (++i === teamsSnap.size)
+                resolve(teams);
             });
         });
       })
       .catch(function(error) {
-          console.log("Error getting documents: ", error);
-          reject("Error getting documents: ", error);
+          reject([]);
       });
   }) 
 };
