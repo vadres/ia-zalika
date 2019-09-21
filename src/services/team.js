@@ -1,221 +1,42 @@
 import { db } from '../config/firebase.cfg';
 
-export const getTeam = (sigla) => {
-  for (let t of teams) {
-  }
-}
+export async function getTeams() {
+  const teams = [];
+  let i = 0;
+  return new Promise(function(resolve, reject) {
+    db.collection("teams")
+      .get()
+      .then(function(teamsSnap) {
+        teamsSnap.forEach(function(doc) {
+          db.collection("teams")
+            .doc(doc.id)
+            .collection("data")
+            .orderBy("time", "desc")
+            .get()
+            .then(function(dataSnap) {
+              dataSnap.forEach(function(docIn) {
+                for (let team of teams){
+                  if (team.initials === doc.id)
+                    return;
+                }
+                teams.push({ ...doc.data(), data: [{ ...docIn.data() }] });
+              })
+              if (++i === teamsSnap.size)
+                resolve(teams);
+            });
+        });
+      })
+      .catch(function(error) {
+          reject([]);
+      });
+  }) 
+};
 
-export const teams  =  [
-  { pal: { data: [{ time: 1568832341508, ps: 3, u6:"05-05", md: "4-02-00-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 3, nsg: "02" }] } },
-  { fla: { data: [{ time: 1568832341508, ps: 1, u6:"15-08", md: "4-04-00-00", vs: "03-01-02-2", gp: 12, gc: 15, nm: 2, nsg: "06" }] } },
-  { gre: { data: [{ time: 1568832341508, ps: 2, u6:"03-05", md: "4-00-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 2, nsg: "01" }] } },
-  { sao: { data: [{ time: 1568832341508, ps: 4, u6:"02-05", md: "4-01-01-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 4, nsg: "03" }] } },
-  { san: { data: [{ time: 1568832341508, ps: 5, u6:"06-05", md: "4-03-01-01", vs: "03-01-02-2", gp: 12, gc: 15, nm: 3, nsg: "06" }] } },
-  { cor: { data: [{ time: 1568832341508, ps: 6, u6:"00-05", md: "4-00-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 6, nsg: "04" }] } },
-  { int: { data: [{ time: 1568832341508, ps: 7, u6:"11-05", md: "4-01-01-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 3, nsg: "01" }] } },
-  { flu: { data: [{ time: 1568832341508, ps: 8, u6:"10-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 4, nsg: "08" }] } },
-  { cam: { data: [{ time: 1568832341508, ps: 9, u6:"6-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 7, nsg: "02" }] } },
-  { cru: { data: [{ time: 1568832341508, ps: 18, u6:"9-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 9, nsg: "03" }] } },
-  { cap: { data: [{ time: 1568832341508, ps: 11, u6:"2-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 5, nsg: "04" }] } },
-  { vas: { data: [{ time: 1568832341508, ps: 12, u6:"1-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 6, nsg: "07" }] } },
-  { bah: { data: [{ time: 1568832341508, ps: 13, u6:"5-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 10, nsg: "08" }] } },
-  { bot: { data: [{ time: 1568832341508, ps: 14, u6:"12-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 11, nsg: "04" }] } },
-  { cha: { data: [{ time: 1568832341508, ps: 15, u6:"5-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 8, nsg: "03" }] } },
-  { for: { data: [{ time: 1568832341508, ps: 16, u6:"0-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 7, nsg: "02" }] } },
-  { goi: { data: [{ time: 1568832341508, ps: 17, u6:"03-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 6, nsg: "07" }] } },
-  { cea: { data: [{ time: 1568832341508, ps: 10, u6:"7-05", md: "4-04-00-00", vs: "03-01-02-2", gp: 12, gc: 15, nm: 8, nsg: "11" }] } },
-  { ala: { data: [{ time: 1568832341508, ps: 19, u6:"10-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 3, nsg: "12" }] } },
-  { ava: { data: [{ time: 1568832341508, ps: 20, u6:"01-05", md: "4-04-02-02", vs: "03-01-02-2", gp: 12, gc: 15, nm: 5, nsg: "12" }] } },
-];
- export const clashes = [
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 3, visitor: "sao", visitorGols:3},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "cor", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 0, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "flu", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "cam", visitorGols:3},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "cru", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "cap", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "vas", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "bah", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 1, visitor: "bot", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "cha", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 0, visitor: "for", visitorGols:2},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "goi", visitorGols:3},
-  {time: 1568832341508, client: "ava", clientGols: 3, visitor: "cea", visitorGols:1},
-  {time: 1568832341508, client: "ava", clientGols: 2, visitor: "ala", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "pal", visitorGols:3},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "fla", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "gre", visitorGols:3},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "sao", visitorGols:3},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "cor", visitorGols:3},
-  {time: 1568832341508, client: "ala", clientGols: 3, visitor: "int", visitorGols:0},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "flu", visitorGols:2},
-  {time: 1568832341508, client: "ala", clientGols: 0, visitor: "cam", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "cru", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "cap", visitorGols:3},
-  {time: 1568832341508, client: "ala", clientGols: 0, visitor: "vas", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "bah", visitorGols:0},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "bot", visitorGols:1},
-  {time: 1568832341508, client: "ala", clientGols: 2, visitor: "cha", visitorGols:0},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "for", visitorGols:0},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "goi", visitorGols:0},
-  {time: 1568832341508, client: "ala", clientGols: 1, visitor: "cea", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "pal", visitorGols:3},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "fla", visitorGols:1},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "cor", visitorGols:0},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "flu", visitorGols:3},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "cam", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "cru", visitorGols:0},
-  {time: 1568832341508, client: "cea", clientGols: 1, visitor: "cap", visitorGols:0},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "vas", visitorGols:2},
-  {time: 1568832341508, client: "cea", clientGols: 0, visitor: "bah", visitorGols:3},
-  {time: 1568832341508, client: "cea", clientGols: 3, visitor: "bot", visitorGols:1},
-  {time: 1568832341508, client: "cea", clientGols: 3, visitor: "cha", visitorGols:0},
-  {time: 1568832341508, client: "cea", clientGols: 3, visitor: "for", visitorGols:1},
-  {time: 1568832341508, client: "cea", clientGols: 2, visitor: "goi", visitorGols:2},
-  {time: 1568832341508, client: "goi", clientGols: 1, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "goi", clientGols: 3, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "goi", clientGols: 0, visitor: "gre", visitorGols:0},
-  {time: 1568832341508, client: "goi", clientGols: 1, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "goi", clientGols: 1, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "goi", clientGols: 1, visitor: "cor", visitorGols:1},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "int", visitorGols:1},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "flu", visitorGols:1},
-  {time: 1568832341508, client: "goi", clientGols: 0, visitor: "cam", visitorGols:2},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "cru", visitorGols:0},
-  {time: 1568832341508, client: "goi", clientGols: 0, visitor: "cap", visitorGols:2},
-  {time: 1568832341508, client: "goi", clientGols: 1, visitor: "vas", visitorGols:3},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "bah", visitorGols:1},
-  {time: 1568832341508, client: "goi", clientGols: 3, visitor: "bot", visitorGols:3},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "cha", visitorGols:3},
-  {time: 1568832341508, client: "goi", clientGols: 2, visitor: "for", visitorGols:1},
-  {time: 1568832341508, client: "for", clientGols: 0, visitor: "pal", visitorGols:3},
-  {time: 1568832341508, client: "for", clientGols: 1, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "for", clientGols: 0, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "for", clientGols: 1, visitor: "sao", visitorGols:0},
-  {time: 1568832341508, client: "for", clientGols: 2, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "for", clientGols: 0, visitor: "cor", visitorGols:3},
-  {time: 1568832341508, client: "for", clientGols: 1, visitor: "int", visitorGols:1},
-  {time: 1568832341508, client: "for", clientGols: 3, visitor: "flu", visitorGols:3},
-  {time: 1568832341508, client: "for", clientGols: 1, visitor: "cam", visitorGols:1},
-  {time: 1568832341508, client: "for", clientGols: 2, visitor: "cru", visitorGols:1},
-  {time: 1568832341508, client: "for", clientGols: 2, visitor: "cap", visitorGols:0},
-  {time: 1568832341508, client: "for", clientGols: 0, visitor: "vas", visitorGols:1},
-  {time: 1568832341508, client: "for", clientGols: 2, visitor: "bah", visitorGols:0},
-  {time: 1568832341508, client: "for", clientGols: 2, visitor: "bot", visitorGols:3},
-  {time: 1568832341508, client: "for", clientGols: 3, visitor: "cha", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 1, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 3, visitor: "fla", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 3, visitor: "gre", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 2, visitor: "sao", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 2, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "cha", clientGols: 2, visitor: "cor", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 3, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "cha", clientGols: 2, visitor: "flu", visitorGols:3},
-  {time: 1568832341508, client: "cha", clientGols: 1, visitor: "cam", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 1, visitor: "cru", visitorGols:3},
-  {time: 1568832341508, client: "cha", clientGols: 1, visitor: "cap", visitorGols:2},
-  {time: 1568832341508, client: "cha", clientGols: 0, visitor: "vas", visitorGols:3},
-  {time: 1568832341508, client: "cha", clientGols: 1, visitor: "bah", visitorGols:1},
-  {time: 1568832341508, client: "cha", clientGols: 0, visitor: "bot", visitorGols:3},
-  {time: 1568832341508, client: "bot", clientGols: 0, visitor: "pal", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "fla", visitorGols:0},
-  {time: 1568832341508, client: "bot", clientGols: 3, visitor: "gre", visitorGols:3},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 2, visitor: "cor", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 0, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 0, visitor: "flu", visitorGols:1},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "cam", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 2, visitor: "cru", visitorGols:1},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "cap", visitorGols:1},
-  {time: 1568832341508, client: "bot", clientGols: 1, visitor: "vas", visitorGols:2},
-  {time: 1568832341508, client: "bot", clientGols: 3, visitor: "bah", visitorGols:0},
-  {time: 1568832341508, client: "bah", clientGols: 2, visitor: "pal", visitorGols:3},
-  {time: 1568832341508, client: "bah", clientGols: 0, visitor: "fla", visitorGols:3},
-  {time: 1568832341508, client: "bah", clientGols: 3, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 1, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 2, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 2, visitor: "cor", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 1, visitor: "int", visitorGols:0},
-  {time: 1568832341508, client: "bah", clientGols: 3, visitor: "flu", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 0, visitor: "cam", visitorGols:0},
-  {time: 1568832341508, client: "bah", clientGols: 3, visitor: "cru", visitorGols:2},
-  {time: 1568832341508, client: "bah", clientGols: 2, visitor: "cap", visitorGols:3},
-  {time: 1568832341508, client: "bah", clientGols: 3, visitor: "vas", visitorGols:2},
-  {time: 1568832341508, client: "vas", clientGols: 3, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "vas", clientGols: 1, visitor: "fla", visitorGols:1},
-  {time: 1568832341508, client: "vas", clientGols: 2, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "vas", clientGols: 1, visitor: "sao", visitorGols:0},
-  {time: 1568832341508, client: "vas", clientGols: 2, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "vas", clientGols: 3, visitor: "cor", visitorGols:0},
-  {time: 1568832341508, client: "vas", clientGols: 0, visitor: "int", visitorGols:3},
-  {time: 1568832341508, client: "vas", clientGols: 0, visitor: "flu", visitorGols:3},
-  {time: 1568832341508, client: "vas", clientGols: 3, visitor: "cam", visitorGols:1},
-  {time: 1568832341508, client: "vas", clientGols: 1, visitor: "cru", visitorGols:1},
-  {time: 1568832341508, client: "vas", clientGols: 1, visitor: "cap", visitorGols:1},
-  {time: 1568832341508, client: "cap", clientGols: 3, visitor: "pal", visitorGols:2},
-  {time: 1568832341508, client: "cap", clientGols: 0, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "cap", clientGols: 2, visitor: "gre", visitorGols:0},
-  {time: 1568832341508, client: "cap", clientGols: 1, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "cap", clientGols: 1, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "cap", clientGols: 3, visitor: "cor", visitorGols:2},
-  {time: 1568832341508, client: "cap", clientGols: 1, visitor: "int", visitorGols:0},
-  {time: 1568832341508, client: "cap", clientGols: 1, visitor: "flu", visitorGols:0},
-  {time: 1568832341508, client: "cap", clientGols: 0, visitor: "cam", visitorGols:0},
-  {time: 1568832341508, client: "cap", clientGols: 1, visitor: "cru", visitorGols:3},
-  {time: 1568832341508, client: "cru", clientGols: 0, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "cru", clientGols: 2, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "cru", clientGols: 1, visitor: "gre", visitorGols:3},
-  {time: 1568832341508, client: "cru", clientGols: 2, visitor: "sao", visitorGols:3},
-  {time: 1568832341508, client: "cru", clientGols: 0, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "cru", clientGols: 1, visitor: "cor", visitorGols:2},
-  {time: 1568832341508, client: "cru", clientGols: 3, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "cru", clientGols: 0, visitor: "flu", visitorGols:0},
-  {time: 1568832341508, client: "cru", clientGols: 0, visitor: "cam", visitorGols:0},
-  {time: 1568832341508, client: "cam", clientGols: 0, visitor: "pal", visitorGols:0},
-  {time: 1568832341508, client: "cam", clientGols: 3, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "cam", clientGols: 2, visitor: "gre", visitorGols:0},
-  {time: 1568832341508, client: "cam", clientGols: 0, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "cam", clientGols: 2, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "cam", clientGols: 2, visitor: "cor", visitorGols:1},
-  {time: 1568832341508, client: "cam", clientGols: 1, visitor: "int", visitorGols:1},
-  {time: 1568832341508, client: "cam", clientGols: 0, visitor: "flu", visitorGols:1},
-  {time: 1568832341508, client: "flu", clientGols: 1, visitor: "pal", visitorGols:2},
-  {time: 1568832341508, client: "flu", clientGols: 3, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "flu", clientGols: 0, visitor: "gre", visitorGols:1},
-  {time: 1568832341508, client: "flu", clientGols: 1, visitor: "sao", visitorGols:3},
-  {time: 1568832341508, client: "flu", clientGols: 1, visitor: "san", visitorGols:1},
-  {time: 1568832341508, client: "flu", clientGols: 0, visitor: "cor", visitorGols:3},
-  {time: 1568832341508, client: "flu", clientGols: 2, visitor: "int", visitorGols:2},
-  {time: 1568832341508, client: "int", clientGols: 1, visitor: "pal", visitorGols:0},
-  {time: 1568832341508, client: "int", clientGols: 2, visitor: "fla", visitorGols:0},
-  {time: 1568832341508, client: "int", clientGols: 3, visitor: "gre", visitorGols:1},
-  {time: 1568832341508, client: "int", clientGols: 1, visitor: "sao", visitorGols:1},
-  {time: 1568832341508, client: "int", clientGols: 2, visitor: "san", visitorGols:0},
-  {time: 1568832341508, client: "int", clientGols: 1, visitor: "cor", visitorGols:2},
-  {time: 1568832341508, client: "cor", clientGols: 2, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "cor", clientGols: 3, visitor: "fla", visitorGols:3},
-  {time: 1568832341508, client: "cor", clientGols: 3, visitor: "gre", visitorGols:0},
-  {time: 1568832341508, client: "cor", clientGols: 0, visitor: "sao", visitorGols:2},
-  {time: 1568832341508, client: "cor", clientGols: 1, visitor: "san", visitorGols:2},
-  {time: 1568832341508, client: "san", clientGols: 1, visitor: "pal", visitorGols:2},
-  {time: 1568832341508, client: "san", clientGols: 1, visitor: "fla", visitorGols:2},
-  {time: 1568832341508, client: "san", clientGols: 1, visitor: "gre", visitorGols:2},
-  {time: 1568832341508, client: "san", clientGols: 1, visitor: "sao", visitorGols:3},
-  {time: 1568832341508, client: "sao", clientGols: 2, visitor: "pal", visitorGols:1},
-  {time: 1568832341508, client: "sao", clientGols: 1, visitor: "fla", visitorGols:0},
-  {time: 1568832341508, client: "sao", clientGols: 1, visitor: "gre", visitorGols:1},
-  {time: 1568832341508, client: "gre", clientGols: 1, visitor: "pal", visitorGols:2},
-  {time: 1568832341508, client: "gre", clientGols: 3, visitor: "fla", visitorGols:1},
-  {time: 1568832341508, client: "fla", clientGols: 1, visitor: "pal", visitorGols:3}
- ];
+export async function getClashes() {
+  const snapshot =  await db.collection("clashes").get();
+  const teams = [];
+  snapshot.forEach(function(doc) {
+    teams.push({ ...doc.data() });
+  });
+  return teams;
+};

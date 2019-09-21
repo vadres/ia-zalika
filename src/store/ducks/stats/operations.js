@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import { db } from '../../../config/firebase.cfg';
 import store from '../../index';
 import { formatCompound } from '../../../services/format';
+import '../../../services/zalika-train';
 
 export async function getTeams() {
   const snapshot =  await db.collection("teams").get();
