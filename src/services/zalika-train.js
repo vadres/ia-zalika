@@ -7,18 +7,20 @@ const findTeam = (init, teams) => (
   teams.filter(el => el.initials === init)[0] 
 );
 
-const extractStats = (data) => (
-  [ 
-    data.ps, 
-    data.gp, 
-    data.gc, 
-    data.nsg, 
-    data.nm, 
-    ...data.md.split("-"), 
-    ...data.vs.split("-"), 
-    ...data.u6.split("-")
-  ]
-)
+const extractStats = (data) => {
+  const [ pt, gp ] = data.u6.split("-");
+  return ([ 
+    (100 / data.ps) / 100, 
+    data.gp / 100, 
+    data.gc / 100, 
+    data.nsg / 100, 
+    data.nm / 100, 
+    ...data.md.split("-").map(el => el / 100), 
+    ...data.vs.split("-").map(el => el / 100), 
+    (pt * 100 / 18)/100,
+    gp / 100
+  ]);
+}
 
 async function train() {
   const teams = await getTeams();
@@ -42,7 +44,7 @@ console.log(teams, clashes);
     myPerceptron.propagate(learningRate, [cw, vw, dw]);
   }
 
-  const statsC = extractStats(findTeam("bot", teams).data[0]);
+  const statsC = extractStats(findTeam("ala", teams).data[0]);
   const statsV = extractStats(findTeam("fla", teams).data[0]);
 
   console.log(myPerceptron.activate([ ...statsC, ...statsV ])); 
